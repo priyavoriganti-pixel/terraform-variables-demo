@@ -5,29 +5,16 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-
-# Install Terraform
-- script: |
-    sudo apt-get update
-    sudo apt-get install -y unzip
-    curl -LO https://releases.hashicorp.com/terraform/1.6.6/terraform_1.6.6_linux_amd64.zip
-    unzip terraform_1.6.6_linux_amd64.zip
-    sudo mv terraform /usr/local/bin/
-    terraform --version
-  displayName: 'Install Terraform'
-
-# Azure Login
 - task: AzureCLI@2
+  displayName: 'Azure Login + Terraform'
   inputs:
     azureSubscription: 'azure-service-conn'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
+      echo "Logged in Azure account:"
       az account show
-  displayName: 'Azure Login'
 
-# Run Terraform
-- script: |
-    terraform init
-    terraform plan
-  displayName: 'Terraform Init and Plan'
+      echo "Running Terraform..."
+      terraform init
+      terraform plan
