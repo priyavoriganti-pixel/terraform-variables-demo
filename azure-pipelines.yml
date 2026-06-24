@@ -1,6 +1,11 @@
 trigger:
 - main
 
+parameters:
+- name: environment
+  type: string
+  default: dev
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -20,6 +25,8 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
+      echo "Selected environment: ${{ parameters.environment }}"
+
       echo "Logged in Azure account:"
       az account show
 
