@@ -6,7 +6,7 @@ pool:
 
 steps:
 
-# Install Terraform manually
+# Install Terraform
 - script: |
     sudo apt-get update
     sudo apt-get install -y unzip
@@ -15,6 +15,16 @@ steps:
     sudo mv terraform /usr/local/bin/
     terraform --version
   displayName: 'Install Terraform'
+
+# Azure Login
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'azure-service-conn'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az account show
+  displayName: 'Azure Login'
 
 # Run Terraform
 - script: |
